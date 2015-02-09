@@ -4,11 +4,15 @@ class GP_New_Default_Theme extends GP_Plugin {
 	public $id = 'new_default_theme';
 	private $child_path;
 
+	const version = '1.0';
+
 	public function __construct() {
 		parent::__construct();
 
 		$this->add_action( 'plugins_loaded' );
 		$this->add_filter( 'tmpl_load_locations', array( 'args' => 4 ) );
+
+		add_action( 'wp_default_styles', array( $this, 'remove_default_style' ) );
 	}
 
 	public function plugins_loaded() {
@@ -23,6 +27,11 @@ class GP_New_Default_Theme extends GP_Plugin {
 		array_unshift( $locations, $this->child_path );
 
 		return $locations;
+	}
+
+
+	public function remove_default_style( $styles ) {
+		$styles->remove( 'base' );
 	}
 
 }
