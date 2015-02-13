@@ -2,6 +2,9 @@
 
 class GP_New_Default_Theme extends GP_Plugin {
 	public $id = 'new_default_theme';
+
+	public $dont_load_parent_theme = true;
+
 	private $child_path;
 
 	const version = '1.0';
@@ -24,7 +27,12 @@ class GP_New_Default_Theme extends GP_Plugin {
 	}
 
 	public function tmpl_load_locations( $locations, $template, $args, $template_path ) {
-		array_unshift( $locations, $this->child_path );
+		if ( $this->dont_load_parent_theme ) {
+			$locations = array( $this->child_path );
+		}
+		else {
+			array_unshift( $locations, $this->child_path );
+		}
 
 		return $locations;
 	}
